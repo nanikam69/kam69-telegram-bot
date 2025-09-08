@@ -22,14 +22,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Configuration du bot
-BOT_TOKEN = "8414079319:AAF4lAStQDmpMbviQ2a_0nEVFfdjTfegmtg"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 BOT_NAME = "kam69"
 
-# Configuration OpenAI (utilise les variables d'environnement déjà configurées)
+# Configuration OpenAI (utilise les variables d\\'environnement déjà configurées)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_base = os.getenv("OPENAI_API_BASE")
 
-# Initialisation de l'application Flask
+# Initialisation de l\\'application Flask
 app = Flask(__name__)
 
 class Kam69Bot:
@@ -48,19 +48,19 @@ class Kam69Bot:
 Je peux vous aider avec :
 • 💬 Conversations intelligentes
 • 📚 Réponses à vos questions
-• 🔍 Recherche d'informations
+• 🔍 Recherche d\\'informations
 • 💡 Conseils et suggestions
 • 🎯 Résolution de problèmes
 
 Tapez simplement votre message et je vous répondrai !
 
 Commandes disponibles :
-/help - Afficher l'aide
-/clear - Effacer l'historique de conversation
+/help - Afficher l\\'aide
+/clear - Effacer l\\'historique de conversation
 /info - Informations sur le bot
         """
         
-        await update.message.reply_text(welcome_message, parse_mode=\'Markdown\')
+        await update.message.reply_text(welcome_message, parse_mode=\\'Markdown\\')
         
         # Initialiser le contexte utilisateur
         user_id = update.effective_user.id
@@ -93,7 +93,7 @@ Commandes disponibles :
 Je suis là pour vous aider ! 🚀
         """
         
-        await update.message.reply_text(help_text, parse_mode=\'Markdown\')
+        await update.message.reply_text(help_text, parse_mode=\\'Markdown\\')
     
     async def info_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Commande /info - Informations sur le bot"""
@@ -120,16 +120,16 @@ Je suis là pour vous aider ! 🚀
 Développé avec ❤️ pour vous offrir la meilleure expérience !
         """
         
-        await update.message.reply_text(info_text, parse_mode=\'Markdown\')
+        await update.message.reply_text(info_text, parse_mode=\\'Markdown\\')
     
     async def clear_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Commande /clear - Effacer l'historique"""
+        """Commande /clear - Effacer l\\\'historique"""
         user_id = update.effective_user.id
         self.user_contexts[user_id] = []
         
         await update.message.reply_text(
             "🗑️ Historique de conversation effacé ! Nous repartons à zéro.",
-            parse_mode=\'Markdown\'
+            parse_mode=\\'Markdown\\'
         )
     
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -148,7 +148,7 @@ Développé avec ❤️ pour vous offrir la meilleure expérience !
                 "content": user_message
             })
             
-            # Limiter l'historique à 20 messages pour éviter les tokens excessifs
+            # Limiter l\\\'historique à 20 messages pour éviter les tokens excessifs
             if len(self.user_contexts[user_id]) > 20:
                 self.user_contexts[user_id] = self.user_contexts[user_id][-20:]
             
@@ -168,29 +168,29 @@ Développé avec ❤️ pour vous offrir la meilleure expérience !
             })
             
             # Envoyer la réponse
-            await update.message.reply_text(response, parse_mode=\'Markdown\')
+            await update.message.reply_text(response, parse_mode=\\'Markdown\\')
             
         except Exception as e:
             logger.error(f"Erreur lors du traitement du message: {e}")
             await update.message.reply_text(
-                "❌ Désolé, j'ai rencontré une erreur. Veuillez réessayer."
+                "❌ Désolé, j\\\'ai rencontré une erreur. Veuillez réessayer."
             )
     
     async def generate_ai_response(self, user_id: int, message: str) -> str:
-        """Génère une réponse IA basée sur le contexte de l'utilisateur"""
+        """Génère une réponse IA basée sur le contexte de l\\\'utilisateur"""
         try:
-            # Préparer les messages pour l'API OpenAI
+            # Préparer les messages pour l\\\'API OpenAI
             messages = [
                 {
                     "role": "system",
-                    "content": """Tu es kam69, un agent IA intelligent et serviable intégré dans Telegram. \n                    \nTes caractéristiques :\n- Tu es amical, professionnel et utile\n- Tu réponds en français par défaut, sauf si on te demande une autre langue\n- Tu gardes le contexte de la conversation\n- Tu donnes des réponses précises et détaillées\n- Tu peux aider sur tous les sujets : éducation, technologie, vie quotidienne, etc.\n- Tu utilises des emojis avec modération pour rendre tes réponses plus engageantes\n- Tu es respectueux et bienveillant\n\nRéponds de manière naturelle et conversationnelle."""
+                    "content": """Tu es kam69, un agent IA intelligent et serviable intégré dans Telegram. \\\\n                    \\\\nTes caractéristiques :\\\\n- Tu es amical, professionnel et utile\\\\n- Tu réponds en français par défaut, sauf si on te demande une autre langue\\\\n- Tu gardes le contexte de la conversation\\\\n- Tu donnes des réponses précises et détaillées\\\\n- Tu peux aider sur tous les sujets : éducation, technologie, vie quotidienne, etc.\\\\n- Tu utilises des emojis avec modération pour rendre tes réponses plus engageantes\\\\n- Tu es respectueux et bienveillant\\\\n\\\\nRéponds de manière naturelle et conversationnelle."""
                 }
             ]
             
-            # Ajouter l'historique de conversation
+            # Ajouter l\\\'historique de conversation
             messages.extend(self.user_contexts[user_id])
             
-            # Appel à l'API OpenAI
+            # Appel à l\\\'API OpenAI
             response = await asyncio.to_thread(
                 openai.ChatCompletion.create,
                 model="gpt-3.5-turbo",
@@ -206,15 +206,15 @@ Développé avec ❤️ pour vous offrir la meilleure expérience !
             return "🤖 Je rencontre des difficultés techniques. Pouvez-vous reformuler votre question ?"
     
     async def error_handler(self, update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Gestionnaire d'erreurs global"""
+        """Gestionnaire d\\\'erreurs global"""
         logger.error(f"Exception lors de la mise à jour {update}: {context.error}")
     
     async def setup_bot_commands(self) -> None:
         """Configure les commandes du bot"""
         commands = [
             BotCommand("start", "Démarrer le bot"),
-            BotCommand("help", "Afficher l'aide"),
-            BotCommand("clear", "Effacer l'historique"),
+            BotCommand("help", "Afficher l\\\'aide"),
+            BotCommand("clear", "Effacer l\\\'historique"),
             BotCommand("info", "Informations sur le bot")
         ]
         
@@ -222,7 +222,7 @@ Développé avec ❤️ pour vous offrir la meilleure expérience !
     
     def run_webhook(self, webhook_url: str) -> None:
         """Lance le bot en mode webhook"""
-        # Créer l'application
+        # Créer l\\\'application
         self.application = Application.builder().token(BOT_TOKEN).build()
         
         # Ajouter les gestionnaires
@@ -232,7 +232,7 @@ Développé avec ❤️ pour vous offrir la meilleure expérience !
         self.application.add_handler(CommandHandler("clear", self.clear_command))
         self.application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_message))
         
-        # Ajouter le gestionnaire d'erreurs
+        # Ajouter le gestionnaire d\\\'erreurs
         self.application.add_error_handler(self.error_handler)
         
         # Configuration des commandes
@@ -260,10 +260,8 @@ async def webhook_handler():
     await kam69_bot_instance.application.process_update(update)
     return "ok"
 
-if __name__ == '__main__':
+if __name__ == \'__main__\':
     # Cette partie sera exécutée si le script est lancé directement (pour le développement local)
-    # Pour le déploiement, le serveur web (Gunicorn, etc.) appellera l'application Flask
-    logger.info("Lancement de l'application Flask...")
+    # Pour le déploiement, le serveur web (Gunicorn, etc.) appellera l\\\'application Flask
+    logger.info("Lancement de l\\\'application Flask...")
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
-
-
