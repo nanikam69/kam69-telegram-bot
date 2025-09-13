@@ -59,9 +59,7 @@ Commandes disponibles :
 /clear - Effacer l\\'historique de conversation
 /info - Informations sur le bot
         """
-        
        await update.message.reply_text(welcome_message, parse_mode=\'Markdown\')
-        
         # Initialiser le contexte utilisateur
         user_id = update.effective_user.id
         if user_id not in self.user_contexts:
