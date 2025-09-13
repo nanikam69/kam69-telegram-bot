@@ -60,7 +60,7 @@ Commandes disponibles :
 /info - Informations sur le bot
         """
         
-        await update.message.reply_text(welcome_message, parse_mode=\\'Markdown\\')
+       await update.message.reply_text(welcome_message, parse_mode=\'Markdown\')
         
         # Initialiser le contexte utilisateur
         user_id = update.effective_user.id
